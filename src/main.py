@@ -184,8 +184,8 @@ def exer2(path):
     
     
     row, column = img.shape
-    gaussianrow = signal.gaussian(row, 1)
-    gaussiancolumn = signal.gaussian(column, 1)
+    gaussianrow = signal.gaussian(row, 30)
+    gaussiancolumn = signal.gaussian(column, 30)
     
     gaussianFilter = np.outer(gaussianrow,gaussiancolumn)
     
@@ -254,6 +254,10 @@ def exer2(path):
     close()
 
     
+
+def exer3():
+    pass
+
     
 
 #%%
@@ -263,4 +267,4 @@ if __name__== "__main__":
     
     #exer1(imagefolder)
 
-    exer2(imagefolder)
+    #exer2(imagefolder)
