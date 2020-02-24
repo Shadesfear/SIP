@@ -4,19 +4,19 @@ import timeit
 import numpy as np
 
 
-def time_function(func, inp, times=10, verbose=False):
+def time_function(func, static_inp, inp_list, times=10, verbose=False):
 
-    iterations = len(inp)
+    iterations = len(inp_list)
     results = np.zeros(iterations)
 
     for i in range(iterations):
         end_time = 0
         if verbose:
-            print("Running input: {}".format(inp[i]))
+            print("Running input: {}".format(inp_list[i]))
 
         for j in range(times):
             start_time = timeit.default_timer()
-            func(inp[i])
+            func(static_inp, inp_list[i])
             end_time += timeit.default_timer() - start_time
         results[i] = end_time
     return {"cumres":  results, "avgres": (results / times)}
