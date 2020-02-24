@@ -151,6 +151,28 @@ def fastFourierConvolve(img, fFilter):
     return res
 
 
+def fastForierApplyFilter(img, filt):
+    '''
+    The way of applying a filter to an image using the
+    convolution theorem and the fourier transform.
+
+    Parameters
+    ----------
+    img: TYPE 2dArray
+        DESCRIPTION the img to be convolved.
+    filter : TYPE, square ndarray
+        DESCRIPTION. the filter to be applied
+    Returns
+    -------
+    img: TYPE 2dArray
+        DESCRIPTION the result of the convolution
+    '''
+    fft_img = np.fft.fft2(img)
+    fft_filt = np.fft.fft2(filt, img.shape)
+    fft_applied = fft_img * fft_filt
+    ifft_applied = np.fft.ifft2(fft_applied)
+    return ifft_applied.real
+
 
 def exer2(path):
     f = np.ones((3,3)) / 9
