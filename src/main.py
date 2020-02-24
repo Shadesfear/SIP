@@ -16,7 +16,7 @@ from matplotlib.pyplot import axis, imshow, subplot, savefig, figure, close, gca
 from skimage import io
 from skimage import color
 from matplotlib import cm
-
+from math import cos
 
 def pf(statement):
     if False:
@@ -184,8 +184,8 @@ def exer2(path):
     
     
     row, column = img.shape
-    gaussianrow = signal.gaussian(row, 1)
-    gaussiancolumn = signal.gaussian(column, 1)
+    gaussianrow = signal.gaussian(row, 30)
+    gaussiancolumn = signal.gaussian(column, 30)
     
     gaussianFilter = np.outer(gaussianrow,gaussiancolumn)
     
@@ -290,7 +290,109 @@ def exer2(path):
     ax.set_ylabel('Time [seconds]')
     plt.savefig('fourier_kernel_size_times.pdf')
 
-    # fourier_times = time_function(convolve, img, kernels, verbose=True)
+
+def constant(i,j):
+    return i + j
+
+    
+class coswave():
+    
+    def __init__(self,a,v,w):
+        self.a = a
+        self.v = v
+        self.w = w
+
+    def func(self,x,y):
+        return self.a*cos(self.v*x + self.w*y)       
+
+    
+def addValue(img, func):
+    '''
+    Adds a function value to each pixel of an image. 
+
+    Parameters
+    ----------
+    img : TYPE, 2dArray
+        DESCRIPTION. an image to be transformed
+    func: TYPE function x,y -> integer
+        DESCRIPTION the function must take inputs x, y.
+    Returns
+    -------
+    img: TYPE 2dArray
+        DESCRIPTION a transformed copy of the original image
+    '''
+    
+    r, c = img.shape
+    
+    res = np.zeros_like(img)
+    
+
+    for i in range(r):
+        for j in range(c):
+            res[i,j] = img[i,j] + func(i,j)
+            #print("res{} = img[i,j] {} + func[i,j] {} ".format(res[i,j],img[i,j],func(i,j)))
+
+    return res
+
+
+def exer3(path):
+    '''
+    Write a program that adds the function a0cos(v0x + w0y) to cameraman.tif. Compute and
+    describe the power spectrum of the result. Design a filter, which removes any such planar
+    waves given v0 and w0.
+    
+    '''
+        
+         
+    #  calculate the power spectrum of trui.png
+    img = np.array(color.rgb2gray(io.imread("cameraman.tif").astype(float)))
+       
+    cosf = coswave(1,1,1)
+    
+    imgtransformed = addValue(img,cosf.func)
+    
+    diff = imgtransformed - img
+    
+    plt.figure
+    subplot(1,3,1)
+    sip3.plotImage(gca(), img, "original", gray=True)
+    subplot(1,3,2)
+    sip3.plotImage(gca(), imgtransformed, "transformed", gray=True)
+    
+    subplot(1,3,3)
+    sip3.plotImage(gca(), diff, "difference", gray=True)
+    
+    sip3.savefig1(path + '2-3.png')
+    close()
+    
+
+    ## powerspectrums 
+    
+    powimg = sip3.powerSpectrum(img)
+    
+    powimgtransformed = sip3.powerSpectrum(imgtransformed)
+    
+    
+    powdiff = sip3.powerSpectrum(diff)
+    
+    
+ 
+    plt.figure
+    subplot(1,3,1)
+    sip3.plotImage(gca(), powimg, "original", gray=True)
+    subplot(1,3,2)
+    sip3.plotImage(gca(), powimgtransformed, "transformed", gray=True)
+    
+    subplot(1,3,3)
+    sip3.plotImage(gca(), powdiff, "difference", gray=True)
+    
+    sip3.savefig1(path + '2-3-powerspectrum.png')
+    close()
+    
+
+
+
+    
 
 #%%
 if __name__== "__main__":
@@ -299,4 +401,6 @@ if __name__== "__main__":
     
     #exer1(imagefolder)
 
-    exer2(imagefolder)
+    #exer2(imagefolder)
+    
+    exer3(imagefolder)
