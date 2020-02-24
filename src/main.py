@@ -334,6 +334,10 @@ def addValue(img, func):
 
     return res
 
+def function(img, v,w, a = 1):
+    addcos = coswave(a,v,w)
+    return addValue(img, addcos.func)    
+
 
 def removePlanarWaves(img,v,w, a=1):
     '''
@@ -373,7 +377,7 @@ def removePlanarWaves(img,v,w, a=1):
     powerRes = np.subtract(powerImg, powerWaves)
     
     # revert transformation
-    result = fftpack.ifft(powerRes)
+    result = fftpack.ifft2(powerRes)
     
     return result
     
@@ -391,7 +395,7 @@ def exer3(path):
     '''
        
     # parameters used in the a * cos(v*x+ w*y) function in the transformation
-    a = 10 
+    a = 1 
     v = 30
     w = 1
          
@@ -445,22 +449,26 @@ def exer3(path):
 
     removedPlanar = removePlanarWaves(imgtransformed, v, w)
 
+
+    realRemovedPlanarorig = np.real(removedPlanar)
+
+
     realRemovedPlanar = np.real(removedPlanar)
 
     print(realRemovedPlanar)
 
     lower0= realRemovedPlanar - (np.min(realRemovedPlanar))
 
-    realRemovedPlanar = 255 * (lower0/np.max(lower0))
+    realRemovedPlanar = (lower0/np.max(lower0))
 
     print(realRemovedPlanar)
 
+    realRemovedPlanar = realRemovedPlanarorig
 
-    diffbefore = imgtransformed - img
-
+    
     diffwaves =  imgtransformed - realRemovedPlanar
  
-    difforiginal = diffwaves - img
+    #difforiginal = img - diffwaves
 
     
     
@@ -470,13 +478,13 @@ def exer3(path):
     sip3.plotImage(gca(), imgtransformed, "(a)", gray=True)
 
     subplot(1,4,2)
-    sip3.plotImage(gca(), diffbefore, "(b)", gray=True)
+    sip3.plotImage(gca(), realRemovedPlanarorig, "(b)", gray=True)
 
     subplot(1,4,3)
     sip3.plotImage(gca(), diffwaves, "(c)", gray=True)
 
     subplot(1,4,4)
-    sip3.plotImage(gca(), difforiginal, "(d)", gray=True)
+    sip3.plotImage(gca(), img, "(d)", gray=True)
 
     sip3.savefig1(path + '2-3-reverseWaves' + ",a={},v={},w={}".format(a,v,w) + ".png")
     close()
