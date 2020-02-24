@@ -311,7 +311,7 @@ def exer3(path):
     #  calculate the power spectrum of trui.png
     img = np.array(color.rgb2gray(io.imread("cameraman.tif").astype(float)))
        
-    cosf = coswave(1,10,1)
+    cosf = coswave(1,1,1)
     
     imgtransformed = addValue(img,cosf.func)
     
@@ -329,6 +329,31 @@ def exer3(path):
     sip3.savefig1(path + '2-3.png')
     close()
     
+
+    ## powerspectrums 
+    
+    powimg = sip3.powerSpectrum(img)
+    
+    powimgtransformed = sip3.powerSpectrum(imgtransformed)
+    
+    
+    powdiff = sip3.powerSpectrum(diff)
+    
+    
+ 
+    plt.figure
+    subplot(1,3,1)
+    sip3.plotImage(gca(), powimg, "original", gray=True)
+    subplot(1,3,2)
+    sip3.plotImage(gca(), powimgtransformed, "transformed", gray=True)
+    
+    subplot(1,3,3)
+    sip3.plotImage(gca(), powdiff, "difference", gray=True)
+    
+    sip3.savefig1(path + '2-3-powerspectrum.png')
+    close()
+    
+
 
 
     
