@@ -190,13 +190,15 @@ def exer2(path):
     gaussianFilter = np.outer(gaussianrow,gaussiancolumn)
     
     fcon = fastFourierConvolve(img,gaussianFilter)
+    fcon2 = fastForierApplyFilter(img, gaussianFilter)
+    io.imsave('fcon2.png', fcon.real)
     
     row, column = img.shape
     
     meanfilter = np.ones_like(img)/ (row * column)
     
     fconMean = fastFourierConvolve(img,meanfilter)
-    
+    fconMeanProper = fastForierApplyFilter(img, f)
     
     def lp_filter(rad, img):
         fil = np.zeros(img.shape)
@@ -254,7 +256,41 @@ def exer2(path):
     close()
 
 
-    
+    # Plotting 2-2-2 again
+    plt.figure
+    subplot(1, 3, 1)
+    sip3.plotImage(gca(), img, 'Original', gray=True)
+
+    subplot(1, 3, 2)
+    sip3.plotImage(gca(), convolvede, 'Loop Convolve', gray=True)
+
+    subplot(1, 3, 3)
+    sip3.plotImage(gca(), fconMeanProper, 'Fourier', gray=True)
+
+    sip3.savefig1(path + '2-2-2remake.pdf')
+    close()
+
+    from util import time_function
+    print('TIMIING')
+    img = np.array(color.rgb2gray(io.imread("trui.png").astype(float)))
+    kernels = [np.ones((i,i))/i**2 for i in range(1,15 , 2)]
+    convolve_times = time_function(convolve, img, kernels, verbose=True, times = 1)
+    print(convolve_times)
+    fig, ax = plt.subplots()
+    ax.bar(range(1, 15, 2), convolve_times['avgres'])
+    ax.set_xlabel('Kernel Size')
+    ax.set_ylabel('Time [seconds]')
+    plt.savefig('convolve_kernel_size_times.pdf')
+    plt.close()
+
+    fourier_times = time_function(fastForierApplyFilter, img, kernels, verbose=True, times = 1)
+    fig, ax = plt.subplots()
+    ax.bar(range(1, 15, 2), fourier_times['avgres'])
+    ax.set_xlabel('Kernel Size')
+    ax.set_ylabel('Time [seconds]')
+    plt.savefig('fourier_kernel_size_times.pdf')
+
+
 def constant(i,j):
     return i + j
 
