@@ -299,6 +299,53 @@ def addValue(img, func):
     return res
 
 
+def removePlanarWaves(img,v,w, a=1):
+    '''
+    removes planarWaves on form a cos(v*x,w*y) from an image. with a = 1. 
+    Where x and y are coordiantes of the image. 
+    
+    Parameters
+    ----------
+    img : TYPE, 2dArray
+        DESCRIPTION. an image to be transformed
+    v: TYPE float
+        DESCRIPTION weight multiplied with the x paremeter
+    w: TYPE float
+        DESCRIPTION weight multiplied with the y paremeter
+    Returns
+    -------
+    img: TYPE 2dArray
+        DESCRIPTION a transformed copy of the original image
+    '''
+    
+    # compute waves cos(v*x +w*y)
+    waves = np.zeros_like(img)
+    cosf = coswave(a,v,w)
+    waves = addValue(waves, cosf.func)
+    
+    # take powerspecturm of coswaves
+    
+    powerWaves = sip3.powerSpectrum(waves)
+    
+    powerWaves = fftpack.fft2(waves)
+    
+    
+    # subtract power spectrum from original images power spectrum
+    
+    powerImg = fftpack.fft2(img)
+
+    powerRes = np.subtract(powerImg, powerWaves)
+    
+    # revert transformation
+    result = fftpack.ifft(powerRes)
+    
+    return result
+    
+    
+    
+    
+
+
 def exer3(path):
     '''
     Write a program that adds the function a0cos(v0x + w0y) to cameraman.tif. Compute and
@@ -306,12 +353,16 @@ def exer3(path):
     waves given v0 and w0.
     
     '''
-        
+       
+    # parameters used in the a * cos(v*x+ w*y) function in the transformation
+    a = 10 
+    v = 30
+    w = 1
          
     #  calculate the power spectrum of trui.png
     img = np.array(color.rgb2gray(io.imread("cameraman.tif").astype(float)))
        
-    cosf = coswave(1,1,1)
+    cosf = coswave(a,v,w)
     
     imgtransformed = addValue(img,cosf.func)
     
@@ -354,7 +405,46 @@ def exer3(path):
     close()
     
 
+    ## remove waves
 
+    removedPlanar = removePlanarWaves(imgtransformed, v, w)
+
+    realRemovedPlanar = np.real(removedPlanar)
+
+    print(realRemovedPlanar)
+
+    lower0= realRemovedPlanar - (np.min(realRemovedPlanar))
+
+    realRemovedPlanar = 255 * (lower0/np.max(lower0))
+
+    print(realRemovedPlanar)
+
+
+    diffbefore = imgtransformed - img
+
+    diffwaves =  imgtransformed - realRemovedPlanar
+ 
+    difforiginal = diffwaves - img
+
+    
+    
+    plt.figure
+
+    subplot(1,4,1)
+    sip3.plotImage(gca(), imgtransformed, "(a)", gray=True)
+
+    subplot(1,4,2)
+    sip3.plotImage(gca(), diffbefore, "(b)", gray=True)
+
+    subplot(1,4,3)
+    sip3.plotImage(gca(), diffwaves, "(c)", gray=True)
+
+    subplot(1,4,4)
+    sip3.plotImage(gca(), difforiginal, "(d)", gray=True)
+
+    sip3.savefig1(path + '2-3-reverseWaves' + ",a={},v={},w={}".format(a,v,w) + ".png")
+    close()
+    
 
     
 
