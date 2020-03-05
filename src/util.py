@@ -2,6 +2,8 @@
 
 import timeit
 import numpy as np
+import matplotlib
+from matplotlib.pyplot import axis, imshow, subplot, savefig, figure, close, gca
 
 
 def time_function(func, static_inp, inp_list, times=10, verbose=False):
@@ -28,3 +30,37 @@ if __name__ == "__main__":
 
 
     print(time_function(firkant, [10**i for i in range(190,200)], times = 1000, verbose=True))
+
+
+
+
+def plotImage(ax, img, title, titleSize = 10, axesOn = False, gray = False):
+
+    if gray == False:
+        ax.imshow(img)
+    else:
+        ax.imshow(img, cmap='gray')
+    
+    gca().set_title(title, fontsize=titleSize)
+   
+    if axesOn: 
+        axis('on')
+    else: 
+        axis('off')
+    return ax
+
+
+
+
+
+
+def savefig1(filename):
+    savefig(filename, dpi=500 , bbox_inches = 'tight')
+
+
+
+
+
+def pf(statement):
+    if False:
+        print(statement)
