@@ -104,9 +104,9 @@ def X_marksTspot(I, S_hit, S_miss):
 A = io.imread(imageLoadingFolder + "\digits_binary_inv.png")
 A2 = np.where(A < A.max()/8, 1, 0)
 
-# #direct cut out letter x
-# F1 = A[0:40,60:90] 
-# F1_miss = binary_dilation(F1)
+#direct cut out of letter x from A2
+F1 = A2[0:40,60:90] 
+F1_miss = np.where(F2 == True, 0,1)
 
 F2 = binary_erosion(A2[0:40,60:90])
 F2_miss = np.where(binary_dilation(binary_dilation(binary_dilation(F2))) == True, 0,1)
@@ -121,14 +121,14 @@ fdim = [25,8]
 fig = plt.figure(figsize = (fdim[0], fdim[1]), constrained_layout = True) #
 gs = fig.add_gridspec(fdim[0],fdim[1])
 
-plt.subplot(gs[0:8,0:4]) #fig_d[0], fig_d[1], 1)
-plotImage(gca(), A2, 'Binary Image', gray=True)
+# plt.subplot(gs[0:8,0:4]) #fig_d[0], fig_d[1], 1)
+# plotImage(gca(), A2, 'Binary Image', gray=True)
 
 
-plt.subplot(gs[0:8,5:6]) #fig_d[0], fig_d[1], 3)
+plt.subplot(gs[0:8,0:4]) #fig_d[0], fig_d[1], 3)
 plotImage(gca(), F2, 'Binary cutout (SE)', gray=True)
 
-plt.subplot(gs[0:8,7:8]) #fig_d[0], fig_d[1], 4)
+plt.subplot(gs[0:8,4:8]) #fig_d[0], fig_d[1], 4)
 plotImage(gca(), F2_miss, 'Dilation on SE (SE_miss)', gray=True)
 
 
@@ -145,17 +145,50 @@ close()
 
 
 
+# maybe plot a figure of the naive implementation.. but what is the naive implementation? binary img and filter without erosion and dilation?
+plt.figure()
+ax = gca()
+ax.imshow(X_marksTspot(A2, F1, F1_miss), interpolation='nearest', aspect = 'equal')
+ax.set_title('Naive Hit or Miss')
+ax.axis('off')
+savefig(imageSavingFolder + r"\1-3_naiveMatch.png")
+close()
+
 
 
 #%%
 
 
+# plt.figure()
+# plotImage(gca(), A2, 'Binary Image', gray=True)
+# plt.tight_layout()
+# savefig(imageSavingFolder + r"\1-3_Original.png")
+# close()
 
 
 
+# plt.figure()
+# plotImage(gca(), F2, 'Binary cutout (SE)', gray=True)
+# plt.tight_layout()
+# savefig(imageSavingFolder + r"\1-3_SEhit.png")
+# close()
 
 
+# plt.figure()
+# plotImage(gca(), F2_miss, 'Dilation on SE (SE_miss)', gray=True)
+# plt.tight_layout()
+# savefig(imageSavingFolder + r"\1-3_SEmiss.png")
+# close()
 
+
+# plt.figure()
+# ax.imshow(X_marksTspot(A2, F2, F2_miss), interpolation='nearest', aspect = 'equal')
+# # ax.set_title('Hit or Miss')
+# ax.axis('off')
+
+
+# savefig(imageSavingFolder + r"\1-3_matches.png")
+# close()
 
 
 
