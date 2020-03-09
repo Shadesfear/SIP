@@ -64,13 +64,6 @@ def procrastinate(data,reference):
     #step one update
     translated_data = data + t
     
-    printf("test1{}".format((np.equal(reference, translated_data).all())))
-    
-    #
-    ##Step update 
-    #arrX = np.subtract(arrX,step1xdata)
-    #arrY = np.subtract(arrY,step1ydata)
-    
     #step2 scaleing
     
     nominator = np.sum(np.dot(np.transpose(data), reference))
@@ -78,27 +71,11 @@ def procrastinate(data,reference):
     
     s = nominator/denominator
     
-    #arrX = s * arrX
-    #arrY = s * arrY
-    
     scaled_data = s * translated_data
-    
-    printf("test2{}".format((np.equal(reference, scaled_data).all())))
-    
     
     # Rotation
     
-    
-    #ones = np.ones_like(arrX)
-    
-#    inhomoarr = np.dstack((arrX, arrY))[0]
-#    
-#    inhomoref = np.dstack((refX, refY))[0]
-#    
-    
     productXY = np.dot(scaled_data, np.transpose(reference))
-    
-    printf(productXY.shape)
     
     # singular value decomposition
     u, _, v = np.linalg.svd(productXY)
@@ -108,9 +85,6 @@ def procrastinate(data,reference):
     # step rotate 
     
     rotated_data = np.dot(r, scaled_data)
-    
-    printf("test3{}".format((np.allclose(reference, rotated_data))))
-    printf((np.allclose(reference, rotated_data)))
     
     return 1 , rotated_data, {}
 
@@ -318,7 +292,7 @@ def test2():
 
 def test3():
     base = 0
-    index = 6
+    index = 3
 
 
     refX = xdata[base,:]
@@ -376,8 +350,8 @@ def exer22():
 
 def main():
     
-    # test1()
-    # test2()
+    #test1()
+    #test2()
     test3()
     exer22()
     # print("done")
