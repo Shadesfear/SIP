@@ -15,9 +15,9 @@ import skimage
 import matplotlib
 from matplotlib.pyplot import axis, imshow, subplot, savefig, figure, close, gca
 from skimage import io
-from skimage import color
+from skimage import color, filters
 from matplotlib import cm
-from skimage.morphology import opening
+from skimage.morphology import opening, erosion, dilation
 from skimage.morphology import closing
 from scipy.ndimage import black_tophat, white_tophat
 from skimage.morphology import binary_erosion, disk
@@ -32,7 +32,7 @@ from util import plotImage, savefig1, time_function
 
 #imageSavingFolder = r"C:\Users\Dalle\Dropbox\skole\SIP\Assignments\Groupwork\assignment5\images"
 
-#%
+#%%
 def exer1():
     cells_binary = color.rgb2gray(io.imread('./Week 5/cells_binary.png'))
 
@@ -98,7 +98,7 @@ def Exer111():
     plotImage(gca(), closing(closing(A)[250:350, 350:450]), 'Closing', gray=True)
     
     
-    savefig(imageSavingFolder + r"\1-1.png")
+    savefig("1-1.png")
     close()
 
 #% hit operation using black tophat
@@ -188,7 +188,7 @@ def Exer13():
     
     
     
-    A = io.imread(imageLoadingFolder + "\digits_binary_inv.png")
+    A = io.imread("./Week 5/digits_binary_inv.png")
     A2 = np.where(A < A.max()/8, 1, 0)
     
     #direct cut out of letter x from A2
@@ -226,7 +226,7 @@ def Exer13():
     ax.axis('off')
     
     plt.tight_layout()
-    savefig(imageSavingFolder + r"\1-3.png")
+    savefig("1-3.png")
     close()
     
     
@@ -238,12 +238,12 @@ def Exer13():
     ax.imshow(X_marksTspot(A2, F1, F1_miss), interpolation='nearest', aspect = 'equal')
     ax.set_title('Naive Hit or Miss')
     ax.axis('off')
-    savefig(imageSavingFolder + r"\1-3_naiveMatch.png")
+    savefig("1-3_naiveMatch.png")
     close()
 
 
 def exer1_4():
-    pf = color.rgb2gray(io.imread('../Week 5/bokeh_purpleflowers.jpg'))
+    pf = color.rgb2gray(io.imread('./Week 5/bokeh_purpleflowers.jpg'))
     filterd = filters.gaussian(pf, sigma = 50)
     plt.imshow(filterd, cmap='gray')
     plt.savefig('filterd.pdf')
