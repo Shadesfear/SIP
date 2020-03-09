@@ -365,10 +365,12 @@ def exer22():
     pred_labels = knn.predict(XTest)
     eq = pred_labels == XTestL
     acc = sum(pred_labels == XTestL) / len(XTestL)
-
+    
+    # knn = KNeighborsClassifier()
     XTrain_Aligned = ProcrastinateArray(XTrain, 0)
     fitted_2 = knn.fit(XTrain_Aligned, XTrainL)
     pred_labels_2 = knn.predict(XTest)
+    # print(pred_labels == pred_labels_2)
     acc_2 = sum(pred_labels_2 == XTestL) / len(XTestL)
 
     print(acc, acc_2)
