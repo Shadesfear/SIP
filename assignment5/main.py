@@ -21,13 +21,12 @@ def main():
     exer1.Exer13()
     exer1.exer1_4()
 
-    
-    
     exer2.exer21(0,3)
     exer2.exer22()
 
     exer3.exer314()
     exer3.exer316()
+    exer3.exer317()
     
 
 
