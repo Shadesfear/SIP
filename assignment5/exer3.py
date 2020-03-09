@@ -8,6 +8,8 @@ Created on Sun Mar  8 19:16:53 2020
 import numpy as np
 import matplotlib.pyplot as plt
 from math import floor
+from scipy import fftpack, signal
+
 
 ### utility functions
 
@@ -135,7 +137,7 @@ def Test1():
     windowhalf = 2
     squarehalf = 1 
     
-    
+
     Whitesquare = np.zeros((windowhalf*2 + 1,windowhalf*2 + 1))
     
     res = Whitesquare.copy()
@@ -204,6 +206,11 @@ def exer316():
     plt.savefig("transformedwhite")
     plt.show()
 
+def exer317():
+    def fourier_translate(image, x0):
+        fourier_transformed = fftpack.fft(image)
+        ftranslate = np.exp(-2*3.14*1j*x0)*image
+        return fftpack.ifft(ftranslate)
 
 def main():
     #Test1()
