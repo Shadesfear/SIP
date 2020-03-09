@@ -6,6 +6,8 @@ Created on Thu Mar  5 14:09:02 2020
 """
 
 # Importing packages
+from skimage.morphology import medial_axis
+from scipy.ndimage.morphology import binary_hit_or_miss
 from scipy import fftpack
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,22 +19,21 @@ from skimage import color
 from matplotlib import cm
 from skimage.morphology import opening
 from skimage.morphology import closing
-from scipy.ndimage import black_tophat
-from skimage.morphology import binary_erosion
+from scipy.ndimage import black_tophat, white_tophat
+from skimage.morphology import binary_erosion, disk
 from skimage.morphology import binary_dilation
 from skimage.color import gray2rgb
 from skimage.draw import line
 import os
-os.chdir(r"C:\Users\Dalle\Dropbox\skole\SIP\Assignments\GroupWork\src")
+#os.chdir(r"C:\Users\Dalle\Dropbox\skole\SIP\Assignments\GroupWork\src")
 
 from util import plotImage, savefig1, time_function
 
-imageLoadingFolder = r'''C:\Users\Dalle\Dropbox\skole\SIP\Assignments\Week 4'''
-imageSavingFolder = r"C:\Users\Dalle\Dropbox\skole\SIP\Assignments\Groupwork\assignment5\images"
+#imageSavingFolder = r"C:\Users\Dalle\Dropbox\skole\SIP\Assignments\Groupwork\assignment5\images"
 
 #%
 def exer1():
-    cells_binary = color.rgb2gray(io.imread('../Week_4_export/cells_binary.png'))
+    cells_binary = color.rgb2gray(io.imread('./Week 5/cells_binary.png'))
 
     # cells_binary = np.max(cells_binary) - cells_binary
     ball = disk(2)
@@ -51,7 +52,7 @@ def exer1():
 
 
 
-    blobs_inv = io.imread('../Week_4_export/blobs_inv.png')
+    blobs_inv = io.imread('./Week 5/blobs_inv.png')
     blobs_inv = np.max(blobs_inv) - blobs_inv
     se0 = np.array([[1, 1, 1, 1, 1]])
     se1 = disk(2)
@@ -81,7 +82,7 @@ def exer1():
 
 # Exercise 1.1.1
 def Exer111():
-    A = io.imread(imageLoadingFolder + "\cells_binary.png")
+    A = io.imread("./Week 5/cells_binary.png")
     
     fig_d = [1,3]
     
@@ -110,7 +111,7 @@ def Exer114():
     None.
 
     '''
-    A = io.imread(imageLoadingFolder + "\cells_binary.png")
+    A = io.imread("./Week 5/cells_binary.png")
     
     def LargeOpening(I, n):
         
@@ -142,17 +143,11 @@ def Exer114():
 
 
 
-
-
-
-
 #%
 
 # Exercise 1.3
     
 def Exer13():
-    from skimage.morphology import medial_axis
-    from scipy.ndimage.morphology import binary_hit_or_miss
     
     def Normalize(I):
         '''
@@ -246,16 +241,15 @@ def Exer13():
     close()
 
 
-
-
 def exer1_4():
-    pf = color.rgb2gray(io.imread('../Week_4_export/bokeh_purpleflowers.jpg'))
+    pf = color.rgb2gray(io.imread('../Week 5/bokeh_purpleflowers.jpg'))
     filterd = filters.gaussian(pf, sigma = 50)
     plt.imshow(filterd, cmap='gray')
     plt.savefig('filterd.pdf')
     minus = pf - filterd
     plt.imshow(minus, cmap='gray')
     plt.savefig('minus.pdf')
+
 
     gradient = minus - erosion(minus)
     plt.imshow(gradient, cmap='gray')
@@ -288,3 +282,15 @@ def exer1_4():
     plt.imshow(pf * eroded)
     plt.savefig('pf_eroded_final.pdf')
     # plt.show()
+
+
+
+def main():
+    exer1()
+    Exer111()
+    Exer114()
+    Exer13()
+    exer1_4()
+
+if __name__ == "__main__":
+    main()
