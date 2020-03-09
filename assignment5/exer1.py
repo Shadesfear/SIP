@@ -31,6 +31,52 @@ imageLoadingFolder = r'''C:\Users\Dalle\Dropbox\skole\SIP\Assignments\Week 4'''
 imageSavingFolder = r"C:\Users\Dalle\Dropbox\skole\SIP\Assignments\Groupwork\assignment5\images"
 
 #%
+def exer1():
+    cells_binary = color.rgb2gray(io.imread('../Week_4_export/cells_binary.png'))
+
+    # cells_binary = np.max(cells_binary) - cells_binary
+    ball = disk(2)
+
+    opened = opening(cells_binary, ball)
+    closed = closing(cells_binary, ball)
+
+    # fig, ax = plt.subplots(1, 3)
+    # ax[0].imshow(cells_binary, cmap='gray')
+    # ax[1].imshow(closed, cmap='gray')
+    # ax[2].imshow(opened, cmap='gray')
+    # plt.show()
+    io.imsave('ball.png', ball)
+    io.imsave('opened.png', opened)
+    io.imsave('closed.png', closed)
+
+
+
+    blobs_inv = io.imread('../Week_4_export/blobs_inv.png')
+    blobs_inv = np.max(blobs_inv) - blobs_inv
+    se0 = np.array([[1, 1, 1, 1, 1]])
+    se1 = disk(2)
+    print()
+    print(se1)
+    se2 = np.array([[0,0,0],
+                   [1,1,0],
+                   [1,1,0]])
+
+    hitormiss0 = binary_hit_or_miss(blobs_inv, se0, origin1=[0, 2])
+    hitormiss1 = binary_hit_or_miss(blobs_inv, se1, 1-disk(12))
+    hitormiss2 = binary_hit_or_miss(blobs_inv, se2, 1-se2)
+
+
+    top_hat0 = white_tophat(blobs_inv, se0)
+    top_hat1 = white_tophat(blobs_inv, se1)
+    top_hat2 = white_tophat(blobs_inv, se2)
+
+    btop_hat0 = black_tophat(blobs_inv, se0)
+    btop_hat1 = black_tophat(blobs_inv, se1)
+    btop_hat2 = black_tophat(blobs_inv, se2)
+
+
+    plt.imshow(hitormiss2, cmap = 'gray')
+    plt.savefig('hitormiss2pdf')
 
 
 # Exercise 1.1.1
@@ -202,13 +248,43 @@ def Exer13():
 
 
 
+def exer1_4():
+    pf = color.rgb2gray(io.imread('../Week_4_export/bokeh_purpleflowers.jpg'))
+    filterd = filters.gaussian(pf, sigma = 50)
+    plt.imshow(filterd, cmap='gray')
+    plt.savefig('filterd.pdf')
+    minus = pf - filterd
+    plt.imshow(minus, cmap='gray')
+    plt.savefig('minus.pdf')
 
+    gradient = minus - erosion(minus)
+    plt.imshow(gradient, cmap='gray')
+    plt.savefig('gradient.pdf')
 
+    threshold = gradient > 0.1
+    plt.imshow(threshold, cmap='gray')
+    plt.savefig('threshold.pdf')
 
+    dilated = threshold.copy()
+    for i in range(15):
+        dilated = dilation(dilated)
+    plt.imshow(dilated, cmap='gray')
+    plt.savefig('dilated.pdf')
 
+    closed = dilated.copy()
+    for i in range(100):
 
+        closed = closing(closed)
+    plt.imshow(closed, cmap='gray')
+    plt.savefig('closed.pdf')
 
+    eroded = closed
+    for i in range(10):
+        eroded = erosion(eroded)
 
+    plt.imshow(eroded, cmap='gray')
+    plt.savefig('eroded.pdf')
 
-
-
+    plt.imshow(pf * eroded)
+    plt.savefig('pf_eroded_final.pdf')
+    # plt.show()
