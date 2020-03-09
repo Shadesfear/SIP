@@ -354,6 +354,8 @@ def test3():
  
 def exer22():
     from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.metrics import accuracy_score
+
     XTrain = np.loadtxt('./Week 5/SIPdiatomsTrain.txt', delimiter=',')
     XTest = np.loadtxt('./Week 5/SIPdiatomsTest.txt', delimiter=',')
     XTrainL = np.loadtxt('./Week 5/SIPdiatomsTrain_classes.txt', delimiter=',')
@@ -361,17 +363,22 @@ def exer22():
 
 
     knn = KNeighborsClassifier()
-    fitted = knn.fit(XTrain, XTrainL)
+    knn.fit(XTrain, XTrainL)
     pred_labels = knn.predict(XTest)
-    eq = pred_labels == XTestL
     acc = sum(pred_labels == XTestL) / len(XTestL)
 
+
+    knn2 = KNeighborsClassifier()
     XTrain_Aligned = ProcrastinateArray(XTrain, 0)
-    fitted_2 = knn.fit(XTrain_Aligned, XTrainL)
-    pred_labels_2 = knn.predict(XTest)
+    XTest_Aligned = ProcrastinateArray(XTest, 0)
+
+    knn2.fit(XTrain_Aligned, XTrainL)
+
+    pred_labels_2 = knn2.predict(XTest)
     acc_2 = sum(pred_labels_2 == XTestL) / len(XTestL)
 
     print(acc, acc_2)
+    print(accuracy_score(XTestL, pred_labels_2))
 
 def main():
     
