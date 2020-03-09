@@ -22,6 +22,7 @@ from skimage.morphology import closing
 from scipy.ndimage import black_tophat, white_tophat
 from skimage.morphology import binary_erosion, disk
 from skimage.morphology import binary_dilation
+from skimage.morphology import black_tophat, white_tophat
 from skimage.color import gray2rgb
 from skimage.draw import line
 import os
