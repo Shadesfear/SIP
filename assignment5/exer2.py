@@ -112,7 +112,7 @@ def procrastinate(data,reference):
     printf("test3{}".format((np.allclose(reference, rotated_data))))
     printf((np.allclose(reference, rotated_data)))
     
-    return rotated_data
+    return 1 , rotated_data, {}
 
 
 
@@ -249,8 +249,12 @@ def ProcrastinateArray(data, referenceelement:int):
 
         data = np.dstack((xdata[i],ydata[i]))[0]
 
-        a, output, d = procrustes_mine(data,reference)
 
+        
+        a, output, d = procrastinate(data,reference)
+                
+        #a, output, d = procrustes_mine(data,reference)
+    
         res[i,0:c-1:2] =  output[:,0]
         res[i,1:c:2] = output[:,1]
 
@@ -314,7 +318,7 @@ def test2():
 
 def test3():
     base = 0
-    index = 4
+    index = 6
 
 
     refX = xdata[base,:]
@@ -348,10 +352,6 @@ def test3():
     plt.show()
 
 
-    isEqual = np.allclose(output, reference)
-
-    print(isEqual)
- 
 def exer22():
     from sklearn.neighbors import KNeighborsClassifier
     XTrain = np.loadtxt('./Week 5/SIPdiatomsTrain.txt', delimiter=',')
@@ -361,14 +361,15 @@ def exer22():
 
 
     knn = KNeighborsClassifier()
-    fitted = knn.fit(XTrain, XTrainL)
+    knn.fit(XTrain, XTrainL)
     pred_labels = knn.predict(XTest)
-    eq = pred_labels == XTestL
     acc = sum(pred_labels == XTestL) / len(XTestL)
 
+
+    knn2 = KNeighborsClassifier()
     XTrain_Aligned = ProcrastinateArray(XTrain, 0)
-    fitted_2 = knn.fit(XTrain_Aligned, XTrainL)
-    pred_labels_2 = knn.predict(XTest)
+    knn2.fit(XTrain_Aligned, XTrainL)
+    pred_labels_2 = knn2.predict(XTest)
     acc_2 = sum(pred_labels_2 == XTestL) / len(XTestL)
 
     print(acc, acc_2)
@@ -377,7 +378,7 @@ def main():
     
     # test1()
     # test2()
-    # test3()
+    test3()
     exer22()
     # print("done")
 
@@ -387,5 +388,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-main()
