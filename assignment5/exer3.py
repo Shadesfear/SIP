@@ -17,18 +17,21 @@ def printf(statement:str):
 
 
 ### 
+
+def exer314():
+    windowhalf = 6
+    squarehalf = 3 
         
-windowhalf = 6
-squarehalf = 3 
     
+    Whitesquare = np.zeros((windowhalf*2 + 1,windowhalf*2 + 1))
+    Whitesquare[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - squarehalf  : windowhalf + squarehalf + 1] = 1
+    
+    printf("Centered whitesquare \n{}".format(Whitesquare))
+    
+    plt.imshow(Whitesquare, cmap='gray')
+    plt.savefig("whitesquare")
 
-Whitesquare = np.zeros((windowhalf*2 + 1,windowhalf*2 + 1))
-Whitesquare[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - squarehalf  : windowhalf + squarehalf + 1] = 1
 
-printf("Centered whitesquare \n{}".format(Whitesquare))
-
-plt.imshow(Whitesquare)
-plt.show()
 
 def translatePoint(Matrix, point):
     """
@@ -115,11 +118,11 @@ def translateMatrix(Matrix, img, interpolationStrategy ,paddingstrategy):
     
     return res
 
-def translate(x,y, img):
+def translate(t, img):
     
     tranformationMatrix = np.identity(3)
-    tranformationMatrix[0,2] = x
-    tranformationMatrix[1,2] = y
+    tranformationMatrix[0,2] = t[0]
+    tranformationMatrix[1,2] = t[1]
     
     return translateMatrix(tranformationMatrix, img, nearestNeighborInterpolation, zerostrategy)
 
@@ -170,7 +173,7 @@ def Test1():
    
 
 
-def Test2():
+def exer316():
     
     ## move right   
     windowhalf = 2
@@ -186,32 +189,26 @@ def Test2():
     res[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - squarehalf + 1  : windowhalf + squarehalf + 2] = 1
     
     
-    plt.imshow(Whitesquare)
+    plt.imshow(Whitesquare, cmap='gray')
     printf("Whitesquare")
+#    plt.show()
+#    plt.imshow(res, cmap=gray)
+#    printf("res")
+    plt.savefig("origwhite")
     plt.show()
-    plt.imshow(res)
+
+    output = translate(np.array((0.6,1.2)), Whitesquare)
+
+    plt.imshow(output, cmap='gray')
     printf("res")
+    plt.savefig("transformedwhite")
     plt.show()
-
-    output = translate(0.5,1.3, Whitesquare)
-
-    plt.imshow(output)
-    printf("res")
-    plt.show()
-
-    printf(output)
-    printf(res)
-
-    if ((np.equal(output,res).all)):
-        printf("True")
-    else: 
-        printf("False")
-    
 
 
 def main():
     #Test1()
-    Test2()
+    exer314()
+    exer316()
     printf("done")
 
 if __name__ == "__main__":
