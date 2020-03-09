@@ -27,8 +27,8 @@ Whitesquare[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - 
 
 printf("Centered whitesquare \n{}".format(Whitesquare))
 
-plt.imshow(Whitesquare)
-plt.show()
+plt.imshow(Whitesquare, cmap='gray')
+plt.savefig("whitesquare")
 
 def translatePoint(Matrix, point):
     """
@@ -115,11 +115,11 @@ def translateMatrix(Matrix, img, interpolationStrategy ,paddingstrategy):
     
     return res
 
-def translate(x,y, img):
+def translate(t, img):
     
     tranformationMatrix = np.identity(3)
-    tranformationMatrix[0,2] = x
-    tranformationMatrix[1,2] = y
+    tranformationMatrix[0,2] = t[0]
+    tranformationMatrix[1,2] = t[1]
     
     return translateMatrix(tranformationMatrix, img, nearestNeighborInterpolation, zerostrategy)
 
@@ -186,18 +186,18 @@ def Test2():
     res[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - squarehalf + 1  : windowhalf + squarehalf + 2] = 1
     
     
-    plt.imshow(Whitesquare)
+    plt.imshow(Whitesquare, cmap='gray')
     printf("Whitesquare")
-    plt.show()
-    plt.imshow(res)
-    printf("res")
-    plt.show()
+#    plt.show()
+#    plt.imshow(res, cmap=gray)
+#    printf("res")
+    plt.savefig("origwhite")
 
-    output = translate(0.5,1.3, Whitesquare)
+    output = translate(np.array((0.6,1.2)), Whitesquare)
 
-    plt.imshow(output)
+    plt.imshow(output, cmap='gray')
     printf("res")
-    plt.show()
+    plt.savefig("transformedwhite")
 
     printf(output)
     printf(res)

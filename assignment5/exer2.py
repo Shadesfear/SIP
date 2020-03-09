@@ -64,13 +64,6 @@ def procrastinate(data,reference):
     #step one update
     translated_data = data + t
     
-    printf("test1{}".format((np.equal(reference, translated_data).all())))
-    
-    #
-    ##Step update 
-    #arrX = np.subtract(arrX,step1xdata)
-    #arrY = np.subtract(arrY,step1ydata)
-    
     #step2 scaleing
     
     nominator = np.sum(np.dot(np.transpose(data), reference))
@@ -78,27 +71,11 @@ def procrastinate(data,reference):
     
     s = nominator/denominator
     
-    #arrX = s * arrX
-    #arrY = s * arrY
-    
     scaled_data = s * translated_data
-    
-    printf("test2{}".format((np.equal(reference, scaled_data).all())))
-    
     
     # Rotation
     
-    
-    #ones = np.ones_like(arrX)
-    
-#    inhomoarr = np.dstack((arrX, arrY))[0]
-#    
-#    inhomoref = np.dstack((refX, refY))[0]
-#    
-    
     productXY = np.dot(scaled_data, np.transpose(reference))
-    
-    printf(productXY.shape)
     
     # singular value decomposition
     u, _, v = np.linalg.svd(productXY)
@@ -109,10 +86,7 @@ def procrastinate(data,reference):
     
     rotated_data = np.dot(r, scaled_data)
     
-    printf("test3{}".format((np.allclose(reference, rotated_data))))
-    printf((np.allclose(reference, rotated_data)))
-    
-    return rotated_data
+    return 1 , rotated_data, {}
 
 
 
@@ -249,8 +223,12 @@ def ProcrastinateArray(data, referenceelement:int):
 
         data = np.dstack((xdata[i],ydata[i]))[0]
 
-        a, output, d = procrustes_mine(data,reference)
 
+        
+        a, output, d = procrastinate(data,reference)
+                
+        #a, output, d = procrustes_mine(data,reference)
+    
         res[i,0:c-1:2] =  output[:,0]
         res[i,1:c:2] = output[:,1]
 
@@ -314,7 +292,7 @@ def test2():
 
 def test3():
     base = 0
-    index = 4
+    index = 3
 
 
     refX = xdata[base,:]
@@ -348,10 +326,6 @@ def test3():
     plt.show()
 
 
-    isEqual = np.allclose(output, reference)
-
-    print(isEqual)
- 
 def exer22():
     from sklearn.neighbors import KNeighborsClassifier
     XTrain = np.loadtxt('./Week 5/SIPdiatomsTrain.txt', delimiter=',')
@@ -361,25 +335,23 @@ def exer22():
 
 
     knn = KNeighborsClassifier()
-    fitted = knn.fit(XTrain, XTrainL)
+    knn.fit(XTrain, XTrainL)
     pred_labels = knn.predict(XTest)
-    eq = pred_labels == XTestL
     acc = sum(pred_labels == XTestL) / len(XTestL)
-    
-    # knn = KNeighborsClassifier()
+
+    knn2 = KNeighborsClassifier()
     XTrain_Aligned = ProcrastinateArray(XTrain, 0)
-    fitted_2 = knn.fit(XTrain_Aligned, XTrainL)
-    pred_labels_2 = knn.predict(XTest)
-    # print(pred_labels == pred_labels_2)
+    knn2.fit(XTrain_Aligned, XTrainL)
+    pred_labels_2 = knn2.predict(XTest)
     acc_2 = sum(pred_labels_2 == XTestL) / len(XTestL)
 
     print(acc, acc_2)
 
 def main():
     
-    # test1()
-    # test2()
-    # test3()
+    #test1()
+    #test2()
+    test3()
     exer22()
     # print("done")
 
@@ -389,5 +361,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-main()
