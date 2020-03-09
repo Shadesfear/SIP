@@ -27,17 +27,6 @@ def printf(statement:str):
 
   
 
-data = np.loadtxt('./Week 5/SIPdiatomsTrain.txt', delimiter=',')
-  
-xdata = data[:,0:179:2]
-ydata = data[:,1:180:2]
-
-
-xdata2 = data[:,0:len(data)-1:2]
-ydata2 = data[:,1:len(data):2]
-
-
-
 def procrastinate(data,reference):
     """
     procrastiante function
@@ -290,9 +279,20 @@ def test2():
 
     print(isEqual)
 
-def test3():
-    base = 0
-    index = 3
+def exer21(base, index):
+   
+    
+    
+    data = np.loadtxt('./Week 5/SIPdiatomsTrain.txt', delimiter=',')
+      
+    xdata = data[:,0:179:2]
+    ydata = data[:,1:180:2]
+    
+    
+    xdata2 = data[:,0:len(data)-1:2]
+    ydata2 = data[:,1:len(data):2]
+    
+
 
 
     refX = xdata[base,:]
@@ -351,7 +351,7 @@ def main():
     
     #test1()
     #test2()
-    test3()
+    drawProcrastinationIndex(0,3)
     exer22()
     # print("done")
 

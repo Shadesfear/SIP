@@ -17,18 +17,21 @@ def printf(statement:str):
 
 
 ### 
+
+def exer314():
+    windowhalf = 6
+    squarehalf = 3 
         
-windowhalf = 6
-squarehalf = 3 
     
+    Whitesquare = np.zeros((windowhalf*2 + 1,windowhalf*2 + 1))
+    Whitesquare[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - squarehalf  : windowhalf + squarehalf + 1] = 1
+    
+    printf("Centered whitesquare \n{}".format(Whitesquare))
+    
+    plt.imshow(Whitesquare, cmap='gray')
+    plt.savefig("whitesquare")
 
-Whitesquare = np.zeros((windowhalf*2 + 1,windowhalf*2 + 1))
-Whitesquare[windowhalf - squarehalf  : windowhalf + squarehalf + 1,windowhalf - squarehalf  : windowhalf + squarehalf + 1] = 1
 
-printf("Centered whitesquare \n{}".format(Whitesquare))
-
-plt.imshow(Whitesquare, cmap='gray')
-plt.savefig("whitesquare")
 
 def translatePoint(Matrix, point):
     """
@@ -170,7 +173,7 @@ def Test1():
    
 
 
-def Test2():
+def exer316():
     
     ## move right   
     windowhalf = 2
@@ -192,26 +195,20 @@ def Test2():
 #    plt.imshow(res, cmap=gray)
 #    printf("res")
     plt.savefig("origwhite")
+    plt.show()
 
     output = translate(np.array((0.6,1.2)), Whitesquare)
 
     plt.imshow(output, cmap='gray')
     printf("res")
     plt.savefig("transformedwhite")
-
-    printf(output)
-    printf(res)
-
-    if ((np.equal(output,res).all)):
-        printf("True")
-    else: 
-        printf("False")
-    
+    plt.show()
 
 
 def main():
     #Test1()
-    Test2()
+    exer314()
+    exer316()
     printf("done")
 
 if __name__ == "__main__":
