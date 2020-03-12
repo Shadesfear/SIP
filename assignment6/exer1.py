@@ -205,7 +205,7 @@ def main():
     
     testImageFolder = "./Week 6/"
 
-    saveImageFolder = "./imageResults/"
+    saveImageFolder = "./exer1Images/"
     
     exer11(testImageFolder,saveImageFolder)
     exer12(testImageFolder,saveImageFolder)
