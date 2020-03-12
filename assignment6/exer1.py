@@ -6,7 +6,7 @@ Created on Thu Mar 12 11:21:11 2020
 This file holds the solution to section 1 for assingment 6 SIP
 """
 
-from  skimage.feature import canny, corner_harris
+from  skimage.feature import canny, corner_harris, corner_peaks
 
 from sklearn.preprocessing import normalize
 import matplotlib.pyplot as plt
@@ -144,6 +144,59 @@ def exer13(testImageFolder,saveImageFolder):
         Remember to indicate your choice of parameter settings 
         in the caption of the figure.
     """
+    
+    
+    
+    # small test to see if the folders where correct
+    img = plt.imread(testImageFolder + "modelhouses.png")
+    
+    im = normalize(img, norm='max')
+    
+    # plots BGR colours should be fixed. 
+    #plt.imsave(saveImageFolder + "hand.tiff", img, cmap=plt.cm.gray)
+    
+    
+    def localMax(x, min_distance=1):
+        
+        return corner_peaks(x, min_distance=min_distance)
+    
+    
+    i = 0
+    j = 0 
+    
+    sigma = [2,4,8]
+    Kthresholds = [15]
+    K = list(map(lambda x: x/1e2, Kthresholds))
+    
+    h = 0
+    min_distance = [1]
+    
+
+    
+    # the values of eps choosen produces garbage. need to ask for better values
+    epsthreshold = [10,50,100]
+    eps = list(map(lambda x: x/1e7, epsthreshold))
+
+    for i in range(len(sigma)): 
+        for j in range(len(K)):
+                res = corner_harris(im, sigma = sigma[i], k = K[j], method='k')
+                peaks = localMax(res, min_distance[h])
+                
+                fig = plt.figure()
+                ax = plt.subplot(1,1,1)
+                ax.plot(peaks[:,0],peaks[:,1], 'ob')
+                ax.imshow(img, cmap=plt.cm.gray)
+
+                ax.axis('off')
+                title = r'Harris_corner $\sigma={},k={}$, Corner_Peaks $mindist={}$'.format(sigma[i], Kthresholds[j], min_distance[h ])
+                ax.set_title(title, fontsize=11)
+                
+                fig.tight_layout()
+                
+                filename = "exer13-" + title
+        
+                plt.savefig(saveImageFolder + filename)    
+        
     
     pass
 
