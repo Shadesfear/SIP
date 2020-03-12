@@ -49,10 +49,7 @@ def exer11(testImageFolder,saveImageFolder):
                 res = canny(im, sigma = sigma[i], low_threshold = low_threshold[j], high_threshold= high_threshold[k])
                 
                 fig = plt.figure()
-                ax = plt.subplot(1,2,1)
-                ax.imshow(img, cmap=plt.cm.gray)
-                ax = plt.subplot(1,2,2)
-                ax.set_title(r'hands', fontsize=11)
+                ax = plt.subplot(1,1,1)
                 ax.imshow(res, cmap=plt.cm.gray)
                 ax.axis('off')
                 ax.set_title(r'$\sigma={},low_t= {} high_t={}$'.format(sigma[i], low_threshold[j], high_threshold[k]), fontsize=11)
@@ -64,7 +61,7 @@ def exer11(testImageFolder,saveImageFolder):
                 plt.savefig(saveImageFolder + filename)    
         
         
-    pass
+    
 
 
 
@@ -99,7 +96,7 @@ def main():
 
     saveImageFolder = "./imageResults/"
     
-    exer11(testImageFolder,saveImageFolder)
+    #exer11(testImageFolder,saveImageFolder)
     exer12(testImageFolder,saveImageFolder)
     exer13(testImageFolder,saveImageFolder)
 
