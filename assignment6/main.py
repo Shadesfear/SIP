@@ -13,10 +13,10 @@ import exer1, exer2
 
 def main():
     
-    testImageFolder = "./Week 6/"
+    testImageFolder = r"./Week 6/"
 
-    saveImageFolderexer1 = "./exer1Images/"
-    saveImageFolderexer2 = "./exer2Images/"
+    saveImageFolderexer1 = r"./exer1Images/"
+    saveImageFolderexer2 = r"./exer2Images/"
     
     exer1.exer11(testImageFolder,saveImageFolderexer1)
     exer1.exer12(testImageFolder,saveImageFolderexer1)    

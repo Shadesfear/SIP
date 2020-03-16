@@ -8,6 +8,8 @@ This file holds the solution to section 1 for assingment 6 SIP
 
 from  skimage.feature import canny, corner_harris, corner_peaks
 
+from PIL import Image
+import numpy as np
 from sklearn.preprocessing import normalize
 import matplotlib.pyplot as plt
 
@@ -23,9 +25,15 @@ def exer11(testImageFolder,saveImageFolder):
     """  
     
     # small test to see if the folders where correct
-    img = plt.imread(testImageFolder + "hand.tiff")
+    img = plt.imread(testImageFolder + r"hand.tiff")
+    # img = Image.open(testImageFolder + r"hand.tiff")
     
-    im = normalize(img, norm='max')
+    #  # Map PIL mode to numpy dtype (note this may need to be extended)
+    # # dtype =np.uint8 # np.float32 #np.uint8
+    
+    # img = np.array(list(img.getdata()), dtype='uint8')
+    
+    im = normalize(img, norm='max') #wouldnt this function normalize per column?
     
     # plots BGR colours should be fixed. 
     #plt.imsave(saveImageFolder + "hand.tiff", img, cmap=plt.cm.gray)
@@ -208,8 +216,8 @@ def main():
     saveImageFolder = "./exer1Images/"
     
     exer11(testImageFolder,saveImageFolder)
-    exer12(testImageFolder,saveImageFolder)
-    exer13(testImageFolder,saveImageFolder)
+    # exer12(testImageFolder,saveImageFolder)
+    # exer13(testImageFolder,saveImageFolder)
 
 if __name__ == "__main__":
     
