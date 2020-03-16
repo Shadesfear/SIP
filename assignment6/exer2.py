@@ -6,8 +6,13 @@ Created on Thu Mar 12 11:21:11 2020
 This file holds the solution to section 1 for assingment 6 SIP
 """
 
+import numpy as np
 from  skimage.feature import canny
 import matplotlib.pyplot as plt
+from skimage import io
+from scipy.signal.windows import gaussian
+from scipy.signal import convolve2d
+from tqdm import tqdm
 
 
 
@@ -18,13 +23,40 @@ def exer21(testImageFolder,saveImageFolder):
         Provide a code snippet and explanation of your solution as well
         as illustrations of your solution.
     """  
+    shape = (512, 512)
+    sigma_blob = 10.0
     
-    # small test to see if the folders where correct
-    img = plt.imread(testImageFolder + "hand.tiff")
-    ## plots BGR colours should be fixed. 
-    plt.imsave(saveImageFolder + "hand.tiff", img)
+    im = np.ones(shape)
+    G = gaussian(shape[0], std = sigma_blob)
+    GG = np.outer(G,G)
+    blob = im* GG
     
     
+    sigma_scl = [0., 1., 2., 3., 4., 5., 8., 10.]
+    sigma_scale = list(map(lambda x: x**2, sigma_scl))
+    
+    for i in tqdm(range(len(sigma_scale))):
+        
+        #create gaussian for scalespace sampling
+        Gs = gaussian(50, std = sigma_scale[i])
+        GGs = np.outer(Gs,Gs)
+        
+        blob_scaled = convolve2d(blob, GGs)
+        
+        fig = plt.figure()
+        ax = plt.subplot(1,1,1)
+        ax.imshow(blob_scaled, cmap=plt.cm.gray)
+    
+        ax.axis('off')
+        title = r'blob w. $\sigma={}$ scalespace w. $\sigma={}$'.format(sigma_blob, sigma_scale[i])
+        ax.set_title(title, fontsize=11)
+        
+        fig.tight_layout()
+        
+        filename = "exer21-" + 'blob w sigma={}, scale w sigma={}'.format(sigma_blob, sigma_scale[i])
+    
+        plt.savefig(saveImageFolder + filename + '.png')    
+        plt.close
 
     
     pass
@@ -91,7 +123,7 @@ def main():
     
     testImageFolder = "./Week 6/"
 
-    saveImageFolder = "./saveImageFolderexer2/"
+    saveImageFolder = "./exer2Images/"
     
     exer21(testImageFolder,saveImageFolder)
     exer23iii(testImageFolder,saveImageFolder)

@@ -76,7 +76,7 @@ def exer12(testImageFolder,saveImageFolder):
    
     
     # small test to see if the folders where correct
-    img =  io.imread(testImageFolder + "hand.tiff")
+    img =  io.imread(testImageFolder + "modelhouses.png")
     
     im = normalize(img, norm='max')
     
@@ -208,8 +208,8 @@ def main():
 
     saveImageFolder = "./exer1Images/"
     
-    #exer11(testImageFolder,saveImageFolder)
-    #exer12(testImageFolder,saveImageFolder)
+    # exer11(testImageFolder,saveImageFolder)
+    # exer12(testImageFolder,saveImageFolder)
     exer13(testImageFolder,saveImageFolder)
 
 if __name__ == "__main__":
