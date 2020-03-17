@@ -60,8 +60,22 @@ def exer21(testImageFolder,saveImageFolder):
     
         plt.savefig(saveImageFolder + filename + '.png')    
         plt.close
+        
+    fig = plt.figure()
+    ax = plt.subplot(1,1,1)
+    ax.imshow(blob, cmap=plt.cm.gray)
 
+    ax.axis('off')
+    title = r'blob w. $\sigma={}$ w. scale = 0'.format(sigma_blob)
+    ax.set_title(title, fontsize=11)
     
+    fig.tight_layout()
+    
+    filename = "exer21-" + 'blob w sigma={}, scale w sigma=0'.format(sigma_blob, sigma_scale[i])
+
+    plt.savefig(saveImageFolder + filename + '.png')    
+    plt.close
+
     pass
 
 
