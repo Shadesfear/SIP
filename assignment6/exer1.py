@@ -52,13 +52,14 @@ def exer11(testImageFolder,saveImageFolder):
                 ax = plt.subplot(1,1,1)
                 ax.imshow(res, cmap=plt.cm.gray)
                 ax.axis('off')
-                ax.set_title(r'$\sigma={},low_t= {} high_t={}$'.format(sigma[i], low_threshold[j], high_threshold[k]), fontsize=11)
+                ax.set_title(r'$\sigma={},low_t={},high_t={}$'.format(sigma[i], low_threshold[j], high_threshold[k]), fontsize=11)
                 
                 fig.tight_layout()
                 
-                filename = "exer11-sigma={},low_t= {} high_t={}".format(sigma[i], lthresholds[j], hthresholds[k])
+                filename = "exer11-sigma={}_low_t={}_high_t={}".format(sigma[i], lthresholds[j], hthresholds[k])
 
                 savefig(saveImageFolder + filename)
+                plt.close()
 
         
      
@@ -112,7 +113,7 @@ def exer12(testImageFolder,saveImageFolder):
                 filename = "exer12-" + 'sigma={},k={}'.format(sigma[i], Kthresholds[j])
         
                 plt.savefig(saveImageFolder + filename)    
-        
+                plt.close()
     
     for i in range(len(sigma)): 
         for j in range(len(eps)):
@@ -130,7 +131,7 @@ def exer12(testImageFolder,saveImageFolder):
                 filename = "exer12-" + 'sigma={},eps={}'.format(sigma[i], eps[j])
         
                 plt.savefig(saveImageFolder + filename)    
-        
+                plt.close()
         
     
 
@@ -197,8 +198,8 @@ def exer13(testImageFolder,saveImageFolder):
                 filename = "exer13-" + 'Harris_corner sigma={},k={}, Corner_Peaks mindist={}'.format(sigma[i], Kthresholds[j], min_distance[h ])
         
                 plt.savefig(saveImageFolder + filename)    
+                plt.close()
         
-    
     pass
 
 
@@ -208,9 +209,9 @@ def main():
 
     saveImageFolder = "./exer1Images/"
     
-    # exer11(testImageFolder,saveImageFolder)
+    exer11(testImageFolder,saveImageFolder)
     # exer12(testImageFolder,saveImageFolder)
-    exer13(testImageFolder,saveImageFolder)
+    # exer13(testImageFolder,saveImageFolder)
 
 if __name__ == "__main__":
     
