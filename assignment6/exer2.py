@@ -26,7 +26,7 @@ def exer21(testImageFolder,saveImageFolder):
         Provide a code snippet and explanation of your solution as well
         as illustrations of your solution.
     """  
-    shape = (512, 512)
+    shape = (124, 124)
     sigma_blob = 10.0
     
     im = np.ones(shape)
@@ -35,13 +35,13 @@ def exer21(testImageFolder,saveImageFolder):
     blob = im* GG
     
     
-    sigma_scl = [0., 1., 2., 3., 4., 5., 8., 10.]
+    sigma_scl = [1., 2., 3., 4., 5., 8., 10., 20]
     sigma_scale = list(map(lambda x: x**2, sigma_scl))
     
     for i in tqdm(range(len(sigma_scale))):
         
         #create gaussian for scalespace sampling
-        Gs = gaussian(50, std = sigma_scale[i])
+        Gs = gaussian(124, std = sigma_scale[i])
         GGs = np.outer(Gs,Gs)
         
         blob_scaled = convolve2d(blob, GGs)
@@ -155,8 +155,82 @@ def exer24(testImageFolder,saveImageFolder):
         as well as illustrations of your solution.
     """
     
-    pass
+    def VerticalSoftEdge(x, x0, sigma, shape = 124):
+        '''
+        Takes the discrete integral from x0 to x using sigma.
 
+        Parameters
+        ----------
+        x : TYPE
+            upper limit of integral
+        x0 : TYPE
+            lower limit of integral
+        sigma : TYPE
+            standard deviation
+
+        Returns
+        -------
+        the cumsum from x0 to x
+
+        '''
+        X = np.linspace(x0, x, shape)
+        num = np.exp(-X**2/(2*sigma**2))
+        denom = np.sqrt(2*np.pi*sigma**2)
+        
+        return np.cumsum(X)
+    
+    
+    
+    
+    shape = (124, 124)
+    sigma_edge = 10.0
+    
+    im = np.ones(shape)
+    edge = VerticalSoftEdge(0, shape[0], sigma_edge, shape[0])
+    Edge = np.zeros(shape)
+    Edge[:] = edge
+    
+    
+    sigma_scl = [1., 2., 3., 4., 5., 8., 10., 20]
+    sigma_scale = list(map(lambda x: x**2, sigma_scl))
+    
+    for i in tqdm(range(len(sigma_scale))):
+        
+        #create gaussian for scalespace sampling
+        Gs = gaussian(124, std = sigma_scale[i])
+        GGs = np.outer(Gs,Gs)
+        
+        edge_scaled = convolve2d(Edge, GGs)
+        
+        fig = plt.figure()
+        ax = plt.subplot(1,1,1)
+        ax.imshow(edge_scaled, cmap=plt.cm.gray)
+    
+        ax.axis('off')
+        title = r'edge w. $\sigma={}$ scalespace w. $\tau={}$'.format(sigma_edge, sigma_scale[i])
+        ax.set_title(title, fontsize=11)
+        
+        fig.tight_layout()
+        
+        filename = "exer24-" + 'vertical edge w sigma={}, scale w sigma={}'.format(sigma_edge, sigma_scale[i])
+    
+        plt.savefig(saveImageFolder + filename + '.png')    
+        plt.close
+        
+    fig = plt.figure()
+    ax = plt.subplot(1,1,1)
+    ax.imshow(Edge, cmap=plt.cm.gray)
+
+    ax.axis('off')
+    title = r'edge w. $\sigma={}$ w. scale = 0'.format(sigma_edge)
+    ax.set_title(title, fontsize=11)
+    
+    fig.tight_layout()
+    
+    filename = "exer24-" + 'vertical edge w sigma={}, scale w sigma=0'.format(sigma_edge, sigma_scale[i])
+
+    plt.savefig(saveImageFolder + filename + '.png')    
+    plt.close
 
 
 def exer25iii(testImageFolder,saveImageFolder):
@@ -166,7 +240,19 @@ def exer25iii(testImageFolder,saveImageFolder):
         as a function of τ using the expression from 2.5.i.
     """
     
-    pass
+    def PlotTau(img, x, y):
+        pi=np.pi
+        h = lambda t: (-(x-y)*np.exp(-(x**2 + y**2)/(2*t**2)))/(2*pi*t**2)
+        Jnorm = lambda t: t*convolve2d(h(t), img[y,x])**2
+        tau = np.linspace(0, 10, 100)
+    
+        plt.plot(x, Jnorm(tau))
+        plt.xlabel('t')
+        plt.ylabel('$||\nabla J(x,y, \tau)||^2$')
+        plt.savefig(saveImageFolder + 'exer25iii.pdf')
+    
+        plt.show()
+        # plt.close()
 
 
 
@@ -189,9 +275,9 @@ def main():
     
     # exer21(testImageFolder,saveImageFolder)
     # exer23iii(testImageFolder,saveImageFolder)
-    exer23iv(testImageFolder,saveImageFolder)
+    # exer23iv(testImageFolder,saveImageFolder)
     # exer24(testImageFolder,saveImageFolder)
-    # exer25iii(testImageFolder,saveImageFolder)
+    exer25iii(testImageFolder,saveImageFolder)
     # exer25iv(testImageFolder,saveImageFolder)
 
 if __name__ == "__main__":
