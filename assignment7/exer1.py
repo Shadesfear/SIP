@@ -2,10 +2,17 @@
 import numpy as np
 from skimage import io
 import matplotlib.pyplot as plt
+from matplotlib import cm
+from skimage.draw import circle_perimeter
+
+from skimage.transform import hough_line, hough_circle, hough_line_peaks, hough_circle_peaks
+from skimage import data, color
+
+from skimage.feature import canny
 
 
 def exer1():
-    def hough_line(image):
+    def hough_line_own(image):
         """
         Does the hough transform on an image,  the image
         should already be a binary image.
@@ -51,7 +58,7 @@ def exer1():
         return result, thetas, rhos
 
     cross = io.imread('Week_7_export/cross.png')
-    r, t, d = hough_line(cross)
+    r, t, d = hough_line_own(cross)
     origin = np.array((0, cross.shape[1]))
 
     ind = np.argpartition(r.flatten(), -2)[-2:]
@@ -70,9 +77,77 @@ def exer1():
         ax[1].plot(origin, (y0, y1), '-r')
     ax[1].imshow(cross, cmap='gray')
     ax[1].axis('off')
-
     ax[1].set_title('Detected lines', fontsize = fontsize)
     plt.savefig('images/hough_cross.pdf')
+    plt.close()
+
+
+    # Nom compare to scikit image's implementation
+
+    tested_angles = np.linspace(-np.pi / 2, np.pi / 2, 360)
+    h, theta, d = hough_line(cross, theta=tested_angles)
+    fig, axes = plt.subplots(1, 2)
+    ax = axes.ravel()
+
+    ax[0].imshow(np.log(1 + h),
+                extent=[np.rad2deg(theta[-1]), np.rad2deg(theta[0]), d[-1], d[0]],
+                cmap=cm.gray, aspect=1/1.5)
+    ax[0].set_title('Hough transform')
+    ax[0].set_xlabel('Angles (degrees)')
+    ax[0].set_ylabel('Distance (pixels)')
+    ax[0].axis('image')
+
+    ax[1].imshow(cross, cmap=cm.gray)
+    origin = np.array((0, cross.shape[1]))
+    for _, angle, dist in zip(*hough_line_peaks(h, theta, d)):
+        y0, y1 = (dist - origin * np.cos(angle)) / np.sin(angle)
+        ax[1].plot(origin, (y0, y1), '-r')
+    ax[1].set_xlim(origin)
+    ax[1].set_ylim((cross.shape[0], 0))
+    ax[1].set_axis_off()
+    ax[1].set_title('Detected lines')
+
+    plt.tight_layout()
+    plt.savefig('images/hough_cross_skimage.pdf')
+    plt.close()
+
+
+
+    coins = io.imread('Week_7_export/coins.png')
+    # Now do the hough circle with skimage first applying canny
+    edges = canny(coins, sigma=5, low_threshold=20, high_threshold=50)
+
+    # Detect two radii
+    hough_radii = np.arange(25, 70, 3)
+    hough_res = hough_circle(edges, hough_radii)
+
+    # Select the most prominent 3 circles
+    accums, cx, cy, radii = hough_circle_peaks(hough_res, hough_radii,
+                                               total_num_peaks=10)
+
+    # plt.imshow(edges)
+
+    # Draw them
+
+    fig, ax = plt.subplots(ncols=2, nrows=1)
+    ax[0].imshow(edges, cmap='gray')
+    ax[0].axis('off')
+    ax[0].set_title('Canny Edges', fontsize=fontsize)
+
+    image = color.gray2rgb(coins)
+    for center_y, center_x, radius in zip(cy, cx, radii):
+        circy, circx = circle_perimeter(center_y, center_x, radius,
+                                        shape=image.shape)
+        image[circy, circx] = (220, 20, 20)
+    ax[1].imshow(image, cmap=plt.cm.gray)
+    ax[1].set_title('Detected Circles', fontsize = fontsize)
+
+    ax[1].axis('off')
+    plt.savefig('images/hough_circle_skimage.png', quality=100)
+    # plt.show()
+    plt.close()
+
+
 
 
 exer1()
