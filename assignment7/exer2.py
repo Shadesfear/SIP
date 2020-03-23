@@ -91,5 +91,5 @@ def exer2_4():
 
 if __name__ == "__main__":
     exer2_2()
-#    exer2_3()
-#    exer2_4()
+    exer2_3()
+    exer2_4()
