@@ -3,7 +3,7 @@
 """
 The file to answer question two in group assingment 7
 """
-from Week_7_export.keras1 import keras_own
+from keras1 import keras_own
 from skimage import io
 import numpy as np
 import matplotlib.pyplot as plt
