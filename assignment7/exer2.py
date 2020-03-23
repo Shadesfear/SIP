@@ -41,21 +41,39 @@ def dice(predictions, thruth):
     return dice
 
 
-def exer2_3():
+def exer2_2():
+    
     model = keras_own()
+    ## Load the pretrained network
+    model.load_weights('Week_7_export/keras.h5') 
     
-    test_img = io.imread("./Week_7_export/test_images/image/1003_3_image.png")
+    # Load the test data 
+    test = np.load('test.npz')
     
-    patches = extract(test_img) 
+    x_test = test['x_test']
+    y_test = test['y_test']
     
-    predclass = model.predict(patches)
-    bestguees = np.argmax(predclass, axis=1)
-    
-    pred = np.reshape(bestguees,(256,256))
-    np.save("exer23",pred)
+    ### evaluate the model on the training data
+    result = model.evaluate(x_test, y_test)
+    print("\n##########\nResults loss, accuracy:\n{}".format(result))
 
 
-#    pred = np.load("exer23.npy")
+
+def exer2_3():
+#    model = keras_own()
+#    
+#    test_img = io.imread("./Week_7_export/test_images/image/1003_3_image.png")
+#    
+#    patches = extract(test_img) 
+#    
+#    predclass = model.predict(patches)
+#    bestguees = np.argmax(predclass, axis=1)
+#    
+#    pred = np.reshape(bestguees,(256,256))
+#    np.save("exer23",pred)
+
+
+    pred = np.load("exer23.npy")
     
     plt.imshow(pred)
     plt.colorbar()
@@ -72,5 +90,6 @@ def exer2_4():
     pass
 
 if __name__ == "__main__":
-    exer2_3()
-    exer2_4()
+    exer2_2()
+#    exer2_3()
+#    exer2_4()
